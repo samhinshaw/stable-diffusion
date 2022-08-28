@@ -1,11 +1,13 @@
 from pathlib import Path
 from diffusers import StableDiffusionPipeline
 from os import path
+from output import save
 
 # what do we want a picture of?
-prompt = "a skyscraper designed by frank lloyd wright"
+PROMPT = "a skyscraper designed by frank lloyd wright"
+SAVE_DIR = "."
 
-
+# get the huggingface token
 def get_token():
     home = path.expanduser("~")
     token_file = path.join(home, ".huggingface", "token")
@@ -22,5 +24,7 @@ pipe = StableDiffusionPipeline.from_pretrained(
 pipe.to("cuda")
 
 # make the image!
-image = pipe(prompt)["sample"][0]
-image.save(f"result.png")
+image = pipe(PROMPT)["sample"][0]
+
+# save it and send it!
+save(image, SAVE_DIR, PROMPT)
